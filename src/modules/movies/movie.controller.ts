@@ -14,6 +14,6 @@ const createMovie = async (req: Request, res: Response) => {
 }
 
 
-export const MovieController = {
+export const MovieControllers= {
     createMovie
 }
