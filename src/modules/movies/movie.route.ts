@@ -1,9 +1,9 @@
-import express, { Request, Response } from 'express'
+import express from "express";
 
 const router = express.Router();
 
-router.post('/', (req: Request, res: Response) => {
-    res.send('Hello World!');
-});
+// define movie routes
+
+router.post("/");
 
 export const MovieRoutes = router;
