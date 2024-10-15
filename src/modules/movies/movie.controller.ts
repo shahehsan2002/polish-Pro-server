@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import { MovieService } from "./movie.service"
 
+// create movie
 const createMovie = async (req: Request, res: Response) => {
 
     const movieData = req.body;
@@ -13,6 +14,7 @@ const createMovie = async (req: Request, res: Response) => {
     })
 }
 
+// get all movies
 const getAllMovies = async (req: Request, res: Response) => {
     try{
         const result = await MovieService.getAllMovies();

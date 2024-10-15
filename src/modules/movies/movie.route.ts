@@ -8,4 +8,7 @@ const router = express.Router();
 // create movie route
 router.post("/", MovieControllers.createMovie);
 
+// get all movies route
+router.get("/", MovieControllers.getAllMovies);
+
 export const MovieRoutes = router;
