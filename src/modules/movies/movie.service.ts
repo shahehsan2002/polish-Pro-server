@@ -7,7 +7,13 @@ const createMovie = async (payload: TMovie) => {
     return result;
 };
 
+const getAllMovies = async () =>{
+    const result = await Movie.find();
+    return result;
+}
+
 
 export const MovieService = {
-    createMovie
+    createMovie,
+    getAllMovies,
 }
