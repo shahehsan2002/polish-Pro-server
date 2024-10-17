@@ -12,7 +12,7 @@ const createMovie = async (payload: TMovie) => {
   const date = format(payload.releaseDate, "dd-MM-yyyy")
 
   //   creating slugify
-  const slug = slugify(`${payload.title}-${date}}`, {
+  const slug = slugify(`${payload.title}-${date}`, {
     lower: true,
   });
     const result = await Movie.create({...payload,  slug });
@@ -33,8 +33,8 @@ const getMovieById = async (id: string) => {
 };
 
 // get movie by slug
-const getMovieBySlug = async (id: string) => {
-  const result = await Movie.findById(id);
+const getMovieBySlug = async (slug: string) => {
+  const result = await Movie.findOne({slug});
   return result;
 };
 
