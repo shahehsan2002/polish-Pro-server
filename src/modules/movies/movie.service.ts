@@ -9,13 +9,13 @@ const createMovie = async (payload: TMovie) => {
   // Inception Two 2010-02-16:00:00.000Z
   // inception-two-2010-02-16
 
-  const date = format(payload.releaseDate, "dd-MM-yyyy")
+  // const date = format(payload.releaseDate, "dd-MM-yyyy")
 
-  //   creating slugify
-  const slug = slugify(`${payload.title}-${date}`, {
-    lower: true,
-  });
-    const result = await Movie.create({...payload,  slug });
+  
+  // const slug = slugify(`${payload.title}-${date}`, {
+  //   lower: true,
+  // });
+    const result = await Movie.create(payload);
 
     return result;
 };
