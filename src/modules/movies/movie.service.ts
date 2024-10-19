@@ -1,46 +1,57 @@
-import { TMovie } from "./movie.interface";
-import { Movie } from "./movie.model";
-import { compareAsc, format } from "date-fns";
-import slugify from "slugify";
+import { TMovie } from "./movie.interface"; // Movie type interface
+import { Movie } from "./movie.model"; // Movie Mongoose model
+import slugify from "slugify"; // You need to install slugify if you haven't already
+import { format } from "date-fns"; // You can install date-fns for formatting dates
 
-// create movie
+// Way 1: Using business logic for slug creation
 const createMovie = async (payload: TMovie) => {
-  // title + releaseDate
-  // Inception Two 2010-02-16:00:00.000Z
-  // inception-two-2010-02-16
+  // Formatting the release date
+  const formattedDate = format(new Date(payload.releaseDate), "yyyy-MM-dd");
 
-  // const date = format(payload.releaseDate, "dd-MM-yyyy")
+  // Creating slug using title and release date, making the title lowercase and replacing spaces
+  const slug = slugify(`${payload.title}-${formattedDate}`, {
+    lower: true, // Ensures that the slug is all lowercase
+    strict: true, // Removes special characters
+  });
 
-  
-  // const slug = slugify(`${payload.title}-${date}`, {
-  //   lower: true,
-  // });
-    const result = await Movie.create(payload);
+  // Assign the slug to the payload
+  const moviePayload = { ...payload, slug };
 
-    return result;
+  // Create and save the movie in the database
+  const result = await Movie.create(moviePayload);
+  return result;
 };
 
-// get all movies
+// Way 2: Using instance method for slug creation
+// In this approach, assume that the `createSlug` method is implemented inside the Movie model.
+const createMovieWithInstanceMethod = async (payload: TMovie) => {
+  const movie = new Movie(payload); // Create a new Movie instance
+
+  // Call the instance method to generate the slug based on the model's logic
+  const slug = movie.createSlug(payload); // Assuming `createSlug` is defined in the model
+
+  movie.slug = slug; // Set the slug to the instance
+  await movie.save(); // Save the movie to the database
+
+  return movie;
+};
+
+// Fetch all movies from the database
 const getAllMovies = async () => {
   const result = await Movie.find();
   return result;
 };
 
-// get movie by id
-const getMovieById = async (id: string) => {
-  const result = await Movie.findById(id);
-  return result;
-};
-
-// get movie by slug
+// Fetch a single movie by its slug
 const getMovieBySlug = async (slug: string) => {
-  const result = await Movie.findOne({slug});
+  const result = await Movie.findOne({ slug: slug });
   return result;
 };
 
-export const MovieService = {
-  createMovie,
+// Export the service functions
+export const MovieServices = {
+  createMovie, // Using business logic slug creation
+  createMovieWithInstanceMethod, // Optional, if you prefer instance method slug creation
   getAllMovies,
-  getMovieById,
   getMovieBySlug,
 };

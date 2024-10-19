@@ -1,14 +1,14 @@
-import { model, Schema } from "mongoose";
-import { TMovie, TMovieInstanceMethods, TMovieModel, TReview } from "./movie.interface";
 import { format } from "date-fns";
+import { Schema, model } from "mongoose";
 import slugify from "slugify";
+import { TMovie, TMovieMethods, TMovieModel, TReview } from "./movie.interface";
 
 const reviewSchema = new Schema<TReview>({
   email: {
     type: String,
     required: true,
   },
-  ratting: {
+  rating: {
     type: Number,
     required: true,
   },
@@ -18,26 +18,31 @@ const reviewSchema = new Schema<TReview>({
   },
 });
 
-const movieSchema = new Schema<TMovie,TMovieModel,TMovieInstanceMethods>({
+const movieSchema = new Schema<TMovie, TMovieModel, TMovieMethods>({
   title: {
     type: String,
-    required: [true, "Movie title is required"],
+    required: [true, "Title is required"],
   },
   description: {
     type: String,
-    required: [true, "Movie description is required"],
+    required: [true, "Description is required"],
   },
   releaseDate: {
     type: Date,
-    required: true,
   },
   genre: {
     type: String,
-    required: true,
+    required: [true, "Genre is required"],
   },
-  reviews: [reviewSchema],
+  reviews: {
+    type: [reviewSchema],
+  },
   slug: {
     type: String,
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false,
   },
   viewCount: {
     type: Number,
@@ -45,23 +50,30 @@ const movieSchema = new Schema<TMovie,TMovieModel,TMovieInstanceMethods>({
   },
 });
 
-// using middleware
-// movieSchema.pre("save", function (next) {
-//   const date = format(this.releaseDate, "dd-MM-yyyy")
+/* Way-2: Using pre hook middleware
+     
+     movieSchema.pre("save", async function (next) {
+     const date = format(this.releaseDate, "dd-MM-yyyy");
 
-//   // create slug
-//   this.slug = slugify(`${this.title}-${date}`, {
-//     lower: true,
-//   });
+  //creating slug
+  this.slug = slugify(`${this.title}-${date}}`, {
+  lower: true,
+  });
+   
+next();
+// }
+);
 
-//     next();
-// });
+*/
 
+movieSchema.method("createSlug", function createSlug(payload: TMovie) {
+  const date = format(payload.releaseDate, "dd-MM-yyyy");
 
-movieSchema.methods("createSlug", function createSlug (payload:TMovie) {
-const data 
-})
+  //creating slug
+  const slug = slugify(`${payload.title}-${date}}`, {
+    lower: true,
+  });
 
-
-
-export const Movie = model<TMovie,TMovieModel>("Movie", movieSchema);
+  return slug;
+});
+export const Movie = model<TMovie, TMovieModel>("Movie", movieSchema);
