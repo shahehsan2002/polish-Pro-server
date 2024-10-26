@@ -6,9 +6,15 @@ const createService = async(payload: TService) => {
     return result;
 }
 
+const getAllServices = async() => {
+    const result = await ServiceModel.find();
+    return result;
+}
+
 
 
 
 export const ServiceServices = {
-    createService
+    createService,
+    getAllServices
 }
