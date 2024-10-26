@@ -15,4 +15,7 @@ router.get("/:id", ServiceControllers.getServiceById);
 // Update a Service
 router.put("/:id", ServiceControllers.updateService);
 
-export const ServiceRoutes = router
+// Delete a Service
+router.delete("/:id", ServiceControllers.deleteService);
+
+export const ServiceRoutes = router;
