@@ -9,4 +9,7 @@ router.post("/", ServiceControllers.createService);
 // Get all Services
 router.get("/", ServiceControllers.getAllServices);
 
+// Get a single Service by id
+router.get("/:id", ServiceControllers.getServiceById);
+
 export const ServiceRoutes = router
