@@ -49,8 +49,29 @@ const getServiceById = async (req: Request, res: Response) => {
     }
 }
 
+// Update a service
+const updateService = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const serviceData = req.body;
+    try {
+        const result = await ServiceServices.updateService(id, serviceData);
+        res.status(200).json({
+            success: true,
+            message: "Service is updated successfully !",
+            data: result
+        });
+    } catch (err: any) {
+        res.status(500).json({
+            success: false,
+            message: "Could not update service!",
+            error: err
+        });
+    }
+}
+
 export const ServiceControllers = {
     createService,
     getAllServices,
     getServiceById,
+    updateService
 }

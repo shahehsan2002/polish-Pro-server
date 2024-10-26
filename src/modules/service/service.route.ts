@@ -12,4 +12,7 @@ router.get("/", ServiceControllers.getAllServices);
 // Get a single Service by id
 router.get("/:id", ServiceControllers.getServiceById);
 
+// Update a Service
+router.put("/:id", ServiceControllers.updateService);
+
 export const ServiceRoutes = router

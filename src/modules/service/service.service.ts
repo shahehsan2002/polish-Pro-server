@@ -19,10 +19,17 @@ const getServiceById = async(id: string) => {
     return result;
 }
 
+// Update a service
+const updateService = async(id: string, payload: TService) => {
+    const result = await ServiceModel.findByIdAndUpdate(id, payload, {new: true});
+    return result;
+}
+
 
 
 export const ServiceServices = {
     createService,
     getAllServices,
-    getServiceById
+    getServiceById,
+    updateService
 }
