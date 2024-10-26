@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import  { model, Schema } from "mongoose";
 import { ISlot } from "./slot.interface";
 
 const SlotSchema = new Schema<ISlot>(
@@ -30,4 +30,8 @@ const SlotSchema = new Schema<ISlot>(
   }
 );
 
-export default mongoose.model<ISlot>("Slot", SlotSchema);
+
+const SlotModel = model<ISlot>("Slot", SlotSchema);
+
+export default SlotModel;
+
