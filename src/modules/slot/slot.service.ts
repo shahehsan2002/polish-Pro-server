@@ -1,35 +1,3 @@
-// import { ISlot } from "./slot.interface";
-// import SlotModel from "./slot.model";
-
-// // Create multiple slots for a service on a specified date
-// const createSlots = async (service: string, date: string, startTime: string, endTime: string, duration: number): Promise<ISlot[]> => {
-//     const slots: ISlot[] = [];
-//     const startMinutes = convertTimeToMinutes(startTime);
-//     const endMinutes = convertTimeToMinutes(endTime);
-  
-//     for (let time = startMinutes; time < endMinutes; time += duration) {
-//       const slotStartTime = convertMinutesToTime(time);
-//       const slotEndTime = convertMinutesToTime(time + duration);
-      
-//       const newSlot = await SlotModel.create({
-//         service,
-//         date,
-//         startTime: slotStartTime,
-//         endTime: slotEndTime,
-//         isBooked: 'available',
-//       });
-  
-//       slots.push(newSlot);
-//     }
-  
-//     return slots;
-//   };
-
-
-//   export const SlotServices = {
-//     createSlots,
-//   };
-// slot.service.ts
 
 import { ISlot } from "./slot.interface";
 import SlotModel from "./slot.model";
@@ -48,7 +16,13 @@ const convertMinutesToTime = (minutes: number): string => {
 };
 
 // Create multiple slots for a service on a specified date
-const createSlots = async (service: string, date: string, startTime: string, endTime: string, duration: number): Promise<ISlot[]> => {
+const createSlots = async (
+    service: string,
+    date: string,
+    startTime: string,
+    endTime: string,
+    duration: number
+): Promise<ISlot[]> => {
     const slots: ISlot[] = [];
     const startMinutes = convertTimeToMinutes(startTime);
     const endMinutes = convertTimeToMinutes(endTime);
@@ -62,7 +36,7 @@ const createSlots = async (service: string, date: string, startTime: string, end
             date,
             startTime: slotStartTime,
             endTime: slotEndTime,
-            isBooked: 'available',
+            isBooked: "available",
         });
 
         slots.push(newSlot);
@@ -71,6 +45,18 @@ const createSlots = async (service: string, date: string, startTime: string, end
     return slots;
 };
 
+// Get all available slots for a service on a specified date
+const getAvailableSlots = async (
+    serviceId?: string,
+    date?: string
+): Promise<ISlot[]> => {
+    const query: any = { isBooked: "available" };
+    if (serviceId) query.service = serviceId;
+    if (date) query.date = date;
+    return await SlotModel.find(query).populate("service");
+};
+
 export const SlotServices = {
     createSlots,
+    getAvailableSlots,
 };
