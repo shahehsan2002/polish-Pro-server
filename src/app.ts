@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { ServiceRoutes } from "./modules/service/service.route";
 import { SlotRoutes } from "./modules/slot/slot.route";
+import { BookingRoutes } from "./modules/booking/booking.route";
 // import { MovieRoutes } from "./modules/movies/movie.route";
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(express.json());
 // app.use("/api/movies", MovieRoutes);
 app.use("/api/services",ServiceRoutes)
 app.use("/api/slots",SlotRoutes)
+app.use("/api/bookings",BookingRoutes)
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
 });
