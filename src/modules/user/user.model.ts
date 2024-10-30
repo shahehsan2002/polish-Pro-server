@@ -10,9 +10,7 @@ const userSchema = new Schema<TUser>({
   role: {
     type: String,
     required: [true, "Role is required"],
-    // enum: ["USER", "ADMIN", "SUPER_ADMIN"],
     enum: Object.keys(USER_Roles),
-    // default: "USER",
   },
   email: {
     type: String,
@@ -25,7 +23,7 @@ const userSchema = new Schema<TUser>({
   },
   status: {
     type: String,
-    // enum: ["ACTIVE", "BLOCKED"],
+    required: [true, "Status is required"],
     enum: Object.keys(USER_STATUS),
     default: "ACTIVE",
   },
