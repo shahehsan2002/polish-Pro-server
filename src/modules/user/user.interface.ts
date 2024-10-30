@@ -1,10 +1,10 @@
-export const USER_Roles = {
-    USER: "USER",
-    ADMIN: "ADMIN",
-    SUPER_ADMIN: "SUPER_ADMIN"
-}as const;
+import { USER_Roles, USER_STATUS } from "./user.constant";
 
-export const USER_STATUS = {
-    ACTIVE: "ACTIVE",
-    BLOCKED: "BLOCKED"
-}as const
+export type TUser = {
+    name: string;
+    role:keyof typeof USER_Roles;
+    email: string;
+    password: string;
+    status: keyof typeof USER_STATUS;
+    passwordChangedAt?: Date;
+};
