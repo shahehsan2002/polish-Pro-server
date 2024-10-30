@@ -13,6 +13,7 @@ app.use(express.json());
 app.use("/api/services",ServiceRoutes)
 app.use("/api/slots",SlotRoutes)
 app.use("/api/bookings",BookingRoutes)
+app.use("/api/users",UserRoutes)
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
 });
