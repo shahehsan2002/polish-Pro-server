@@ -24,7 +24,7 @@ const userSchema = new Schema<TUser>({
   password: {
     type: String,
     required: [true, "Password is required"],
-    // select: 0,
+    select: 0,
   },
   status: {
     type: String,
@@ -37,6 +37,8 @@ const userSchema = new Schema<TUser>({
   },
 });
 
+// Password Hashing
+
 userSchema.pre("save", async function (next) {
   const user = this;
 
@@ -44,10 +46,12 @@ userSchema.pre("save", async function (next) {
 
   next();
 });
-// userSchema.post("save", function (doc, next) {
-//   doc.password = "";
 
-//   next();
-// });
+
+userSchema.post("save", function (doc, next) {
+  doc.password = "";
+
+  next();
+});
 
 export const UserModel = model<TUser>("User", userSchema);
