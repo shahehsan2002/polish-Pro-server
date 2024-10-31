@@ -10,7 +10,15 @@ const createAdminValidations = z.object({
     status: z.nativeEnum(USER_STATUS).default(USER_STATUS.ACTIVE),
   }),
 });
+const updateUserValidations = z.object({
+  body: z.object({
+    name: z.string().optional(),
+    role: z.nativeEnum(USER_Roles).optional(),
+    status: z.nativeEnum(USER_STATUS).optional(),
+  }),
+});
 
 export const UserValidations = {
   createAdminValidations,
+  updateUserValidations,
 };
