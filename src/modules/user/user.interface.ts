@@ -8,3 +8,4 @@ export type TUser = {
     status: keyof typeof USER_STATUS;
     passwordChangedAt?: Date;
 };
+
