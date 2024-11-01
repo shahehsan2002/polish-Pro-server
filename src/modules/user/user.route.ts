@@ -9,6 +9,11 @@ const router = express.Router();
 router.post(
   "/create-admin",
   validateRequest(UserValidations.createAdminValidations),
+ (req,res, next) =>{
+  const token = req.headers.authorization;
+  console.log("Middleware",token);
+  next();
+ },
   UserController.createAdmin
 );
 
