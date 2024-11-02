@@ -1,10 +1,9 @@
-
- /* eslint-disable @typescript-eslint/no-this-alias */
-import { USER_Roles, USER_STATUS } from "./user.constant";
+/* eslint-disable @typescript-eslint/no-this-alias */
 import { TUser } from "./user.interface";
 import { model, Schema } from "mongoose";
 import bcryptjs from "bcryptjs";
 import config from "../../config";
+import { USER_Role, USER_STATUS } from "./user.constant";
 
 const userSchema = new Schema<TUser>({
   name: {
@@ -14,7 +13,7 @@ const userSchema = new Schema<TUser>({
   role: {
     type: String,
     required: [true, "Role is required"],
-    enum: Object.keys(USER_Roles),
+    enum: Object.keys(USER_Role),
   },
   email: {
     type: String,
@@ -37,8 +36,6 @@ const userSchema = new Schema<TUser>({
   },
 });
 
-// Password Hashing
-
 userSchema.pre("save", async function (next) {
   const user = this;
 
@@ -46,12 +43,10 @@ userSchema.pre("save", async function (next) {
 
   next();
 });
-
-
 userSchema.post("save", function (doc, next) {
   doc.password = "";
 
   next();
 });
 
-export const UserModel = model<TUser>("User", userSchema);
+export const User = model<TUser>("User", userSchema);

@@ -1,11 +1,19 @@
-import { USER_Roles, USER_STATUS } from "./user.constant";
+//  name
+//  role
+//  email
+//  password
+//  status
+//  passwordChangedAt
+
+import { USER_Role, USER_STATUS } from "./user.constant";
+
+
 
 export type TUser = {
-    name: string;
-    role:keyof typeof USER_Roles;
-    email: string;
-    password: string;
-    status: keyof typeof USER_STATUS;
-    passwordChangedAt?: Date;
+  name: string;
+  role: keyof typeof USER_Role;
+  email: string;
+  password: string;
+  status: keyof typeof USER_STATUS;
+  passwordChangedAt?: Date;
 };
-

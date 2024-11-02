@@ -1,29 +1,45 @@
+//  /create-admin, superAdmin,admin post
+// /:userid- admin, superadmin put
+// /:userid-  get
+// /me - user own data. put
+//
+
 import express from "express";
-import { UserController } from "./user.controller";
-import validateRequest from "../../middleware/validateRequest";
+// import { auth } from "../../middlewares/auth";
+// import validateRequest from "../../middlewares/validateRequest";
+// import { USER_Role } from "./user.constants";
+import { userControllers } from "./user.controller";
 import { UserValidations } from "./user.validation";
+import { USER_Role } from "./user.constant";
+import validateRequest from "../../middleware/validateRequest";
+import { auth } from "../../middleware/auth";
 
 const router = express.Router();
 
-// CREATE ADMIN
 router.post(
   "/create-admin",
   validateRequest(UserValidations.createAdminValidations),
- (req,res, next) =>{
-  const token = req.headers.authorization;
-  console.log("Middleware",token);
-  next();
- },
-  UserController.createAdmin
+  auth(USER_Role.ADMIN, USER_Role.SUPER_ADMIN),
+  userControllers.createAdmin
 );
 
-// UPDATE USER
+//update
 router.put(
   "/:userId",
-validateRequest(UserValidations.updateUserValidations),
-  UserController.updateUser
+  auth(USER_Role.ADMIN, USER_Role.SUPER_ADMIN),
+  validateRequest(UserValidations.updateUserValidations),
+  userControllers.updateUser
 );
-
-
+// router.put(
+//   "/me",
+//   auth(USER_Role.ADMIN, USER_Role.SUPER_ADMIN, USER_Role.USER),
+//   validateRequest(UserValidations.updateUserValidations),
+//   userControllers.updateUser
+// );
 
 export const UserRoutes = router;
+
+//login /api/auth/login
+//register /api/users/create-student : /api/auth/register
+//forgot password /api/auth/forgot-password
+//refresh token /api/auth/refresh-token

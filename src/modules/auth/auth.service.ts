@@ -1,32 +1,33 @@
-import config from "../../config";
-import { isPasswordMatched } from "../../utils/auth.util";
-import { USER_Roles } from "../user/user.constant";
+// import { isPasswordMatched } from "./auth.util";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// import { USER_Role } from "../user/user.constants";
 import { TUser } from "../user/user.interface";
-import { UserModel } from "../user/user.model";
+import { User } from "../user/user.model";
 import { TLoginUser } from "./auth.interface";
 import jwt from "jsonwebtoken";
+import config from "../../config";
+import { isPasswordMatched } from "./auth.utils";
+import { USER_Role } from "../user/user.constant";
 
-const register = async (payload: TUser) => {
-  // User existence check
-  const user = await UserModel.findOne(payload);
+const register = async (payload: TUser): Promise<any> => {
+  //user existence check
+  const user = await User.findOne({ email: payload.email });
 
   if (user) {
     throw new Error("User already exists");
   }
 
-  // set user role by default
+  //set user role
+  payload.role = USER_Role.USER;
 
-  payload.role = USER_Roles.USER;
+  //create user
+  const newUser = await User.create(payload);
 
-  // create user
-  const newUser = await UserModel.create(payload);
   return newUser;
 };
 
 const login = async (payload: TLoginUser) => {
-  const user = await UserModel.findOne({ email: payload.email }).select(
-    "+password"
-  );
+  const user = await User.findOne({ email: payload.email }).select("+password");
 
   if (!user) {
     throw new Error("User not found");
@@ -36,13 +37,13 @@ const login = async (payload: TLoginUser) => {
     throw new Error("User is blocked");
   }
 
-  const passwordMatched = await isPasswordMatched(
+  const passwordMatch = await isPasswordMatched(
     payload.password,
     user.password
   );
 
-  if (!passwordMatched) {
-    throw new Error("Password is incorrect");
+  if (!passwordMatch) {
+    throw new Error("Password not matched");
   }
 
   const jwtPayload = {
@@ -68,7 +69,7 @@ const login = async (payload: TLoginUser) => {
   };
 };
 
-export const authService = {
+export const AuthServices = {
   register,
   login,
 };

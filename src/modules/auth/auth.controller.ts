@@ -1,39 +1,35 @@
-import { Request, Response } from "express";
-import { catchAsync } from "../../utils/catchAsync";
-import { authService } from "./auth.service";
 import config from "../../config";
+import { catchAsync } from "../../utils/catchAsync";
+import { AuthServices } from "./auth.service";
 
 const register = catchAsync(async (req, res) => {
-  const result = await authService.register(req.body);
+  const result = await AuthServices.register(req.body);
 
   res.status(200).json({
     success: true,
-    message: "User is registered successfully !",
+    message: "User registered successfully!",
     data: result,
   });
 });
 
-const login = catchAsync(async (req: Request, res: Response) => {
-
-  const {accessToken, refreshToken} = await authService.login( req.body);
-
+const login = catchAsync(async (req, res) => {
+  const { accessToken, refreshToken } = await AuthServices.login(req.body);
 
   res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: config.NODE_ENV === "production",
-  })
+    httpOnly: true,
+    secure: config.NODE_ENV === "production",
+  });
 
   res.status(200).json({
     success: true,
-    message: "User is logged in successfully !",
+    message: "User logged in successfully!",
     data: {
       accessToken,
-
-    }
+    },
   });
 });
 
-export const AuthController = {
+export const authControllers = {
   register,
   login,
 };
